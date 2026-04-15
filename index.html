@@ -1,0 +1,404 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Industrial Visit Form</title>
+  <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Barlow:wght@300;400;500;600&display=swap" rel="stylesheet"/>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --bg:       #0f0d11;
+      --card:     #1a1720;
+      --border:   #2e2a36;
+      --input-bg: #221f2b;
+      --accent1:  #ff4d2e;
+      --accent2:  #ff8c42;
+      --text:     #e8e0f0;
+      --muted:    #8a8098;
+      --label:    #c4b8d8;
+    }
+
+    body {
+      min-height: 100vh;
+      background: var(--bg);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-family: 'Barlow', sans-serif;
+      padding: 2rem 1rem;
+      position: relative;
+      overflow-x: hidden;
+    }
+
+    /* Atmospheric background */
+    body::before {
+      content: '';
+      position: fixed; inset: 0;
+      background:
+        radial-gradient(ellipse 60% 50% at 20% 30%, rgba(255,77,46,.18) 0%, transparent 60%),
+        radial-gradient(ellipse 50% 40% at 80% 70%, rgba(120,40,180,.15) 0%, transparent 60%);
+      pointer-events: none;
+      z-index: 0;
+    }
+
+    /* Noise grain */
+    body::after {
+      content: '';
+      position: fixed; inset: 0;
+      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='.04'/%3E%3C/svg%3E");
+      background-size: 200px;
+      pointer-events: none;
+      z-index: 0;
+      opacity: .5;
+    }
+
+    .card {
+      position: relative;
+      z-index: 1;
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      padding: 2.4rem 2rem;
+      width: 100%;
+      max-width: 440px;
+      box-shadow: 0 0 0 1px rgba(255,255,255,.04),
+                  0 30px 60px rgba(0,0,0,.55),
+                  inset 0 1px 0 rgba(255,255,255,.06);
+      animation: cardIn .6s cubic-bezier(.22,1,.36,1) both;
+    }
+
+    @keyframes cardIn {
+      from { opacity: 0; transform: translateY(28px) scale(.97); }
+      to   { opacity: 1; transform: none; }
+    }
+
+    /* Decorative top bar */
+    .card::before {
+      content: '';
+      position: absolute;
+      top: 0; left: 10%; right: 10%;
+      height: 2px;
+      background: linear-gradient(90deg, transparent, var(--accent1), var(--accent2), transparent);
+      border-radius: 0 0 4px 4px;
+    }
+
+    .title {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: 2.2rem;
+      letter-spacing: .04em;
+      line-height: 1;
+      background: linear-gradient(130deg, var(--accent1) 20%, var(--accent2) 80%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      margin-bottom: .45rem;
+    }
+
+    .subtitle {
+      font-size: .82rem;
+      color: var(--muted);
+      font-weight: 300;
+      letter-spacing: .02em;
+      margin-bottom: 1.8rem;
+    }
+
+    /* Divider */
+    .divider {
+      height: 1px;
+      background: linear-gradient(90deg, var(--accent1), transparent);
+      margin-bottom: 1.6rem;
+      opacity: .35;
+    }
+
+    .field {
+      margin-bottom: 1.1rem;
+      animation: fieldIn .5s cubic-bezier(.22,1,.36,1) both;
+    }
+
+    .field:nth-child(1) { animation-delay: .08s }
+    .field:nth-child(2) { animation-delay: .14s }
+    .field:nth-child(3) { animation-delay: .20s }
+    .field:nth-child(4) { animation-delay: .26s }
+    .field:nth-child(5) { animation-delay: .32s }
+    .field:nth-child(6) { animation-delay: .38s }
+
+    @keyframes fieldIn {
+      from { opacity: 0; transform: translateX(-10px); }
+      to   { opacity: 1; transform: none; }
+    }
+
+    label {
+      display: block;
+      font-size: .75rem;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: .08em;
+      color: var(--label);
+      margin-bottom: .45rem;
+    }
+
+    label .req {
+      color: var(--accent1);
+      margin-left: 2px;
+    }
+
+    input[type="text"],
+    input[type="tel"],
+    select {
+      width: 100%;
+      background: var(--input-bg);
+      border: 1.5px solid var(--border);
+      border-radius: 8px;
+      color: var(--text);
+      font-family: 'Barlow', sans-serif;
+      font-size: .92rem;
+      font-weight: 400;
+      padding: .7rem 1rem;
+      outline: none;
+      transition: border-color .2s, box-shadow .2s, background .2s;
+      appearance: none;
+      -webkit-appearance: none;
+    }
+
+    input[type="text"]:focus,
+    input[type="tel"]:focus,
+    select:focus {
+      border-color: var(--accent1);
+      background: #271f2e;
+      box-shadow: 0 0 0 3px rgba(255,77,46,.14);
+    }
+
+    input::placeholder { color: var(--muted); font-weight: 300; }
+
+    /* Custom select arrow */
+    .select-wrap {
+      position: relative;
+    }
+    .select-wrap::after {
+      content: '▾';
+      position: absolute; right: .9rem; top: 50%;
+      transform: translateY(-50%);
+      color: var(--accent1);
+      pointer-events: none;
+      font-size: .8rem;
+    }
+    select option { background: #1a1720; }
+
+    /* Gender radio */
+    .radio-group {
+      display: flex;
+      gap: 1.4rem;
+      margin-top: .2rem;
+    }
+
+    .radio-group label {
+      display: flex;
+      align-items: center;
+      gap: .5rem;
+      text-transform: none;
+      letter-spacing: 0;
+      font-size: .9rem;
+      font-weight: 400;
+      color: var(--text);
+      cursor: pointer;
+    }
+
+    .radio-group input[type="radio"] {
+      appearance: none;
+      -webkit-appearance: none;
+      width: 18px; height: 18px;
+      border: 2px solid var(--border);
+      border-radius: 50%;
+      background: var(--input-bg);
+      cursor: pointer;
+      transition: border-color .2s;
+      position: relative;
+      flex-shrink: 0;
+    }
+    .radio-group input[type="radio"]:checked {
+      border-color: var(--accent1);
+    }
+    .radio-group input[type="radio"]::after {
+      content: '';
+      position: absolute; inset: 3px;
+      border-radius: 50%;
+      background: linear-gradient(135deg, var(--accent1), var(--accent2));
+      opacity: 0;
+      transform: scale(0);
+      transition: opacity .2s, transform .2s;
+    }
+    .radio-group input[type="radio"]:checked::after {
+      opacity: 1; transform: scale(1);
+    }
+
+    /* Buttons */
+    .btn-row {
+      display: flex;
+      gap: .8rem;
+      margin-top: 1.6rem;
+    }
+
+    .btn-submit {
+      flex: 1;
+      padding: .78rem 1rem;
+      background: linear-gradient(135deg, var(--accent1) 0%, var(--accent2) 100%);
+      border: none;
+      border-radius: 8px;
+      color: #fff;
+      font-family: 'Barlow', sans-serif;
+      font-size: .9rem;
+      font-weight: 700;
+      letter-spacing: .06em;
+      text-transform: uppercase;
+      cursor: pointer;
+      transition: filter .2s, transform .15s, box-shadow .2s;
+      box-shadow: 0 4px 18px rgba(255,77,46,.35);
+    }
+    .btn-submit:hover {
+      filter: brightness(1.12);
+      transform: translateY(-1px);
+      box-shadow: 0 6px 24px rgba(255,77,46,.5);
+    }
+    .btn-submit:active { transform: translateY(0); filter: brightness(.95); }
+
+    .btn-reset {
+      padding: .78rem 1.2rem;
+      background: transparent;
+      border: 1.5px solid var(--border);
+      border-radius: 8px;
+      color: var(--muted);
+      font-family: 'Barlow', sans-serif;
+      font-size: .9rem;
+      font-weight: 600;
+      letter-spacing: .04em;
+      text-transform: uppercase;
+      cursor: pointer;
+      transition: border-color .2s, color .2s;
+    }
+    .btn-reset:hover { border-color: var(--accent1); color: var(--text); }
+
+    /* Success toast */
+    .toast {
+      position: fixed; bottom: 1.8rem; left: 50%; transform: translateX(-50%) translateY(20px);
+      background: #1f2d1f;
+      border: 1px solid #3a6b3a;
+      color: #7fe87f;
+      font-size: .85rem;
+      font-weight: 600;
+      padding: .7rem 1.4rem;
+      border-radius: 40px;
+      letter-spacing: .04em;
+      opacity: 0;
+      transition: opacity .3s, transform .3s;
+      pointer-events: none;
+      z-index: 999;
+    }
+    .toast.show { opacity: 1; transform: translateX(-50%) translateY(0); }
+  </style>
+</head>
+<body>
+
+<div class="card">
+  <div class="title">Industrial Visit Form</div>
+  <p class="subtitle">Fill in your details to register for the industrial visit</p>
+  <div class="divider"></div>
+
+  <form name="google-sheet" id="visitForm">
+
+    <div class="field">
+      <label>Full Name <span class="req">*</span></label>
+      <input type="text" name="Full Name" placeholder="e.g. Rajesh Kumar" required />
+    </div>
+
+    <div class="field">
+      <label>Roll Number <span class="req">*</span></label>
+      <input type="text" name="Roll Number" placeholder="e.g. 21ME042" required />
+    </div>
+
+    <div class="field">
+      <label>Phone Number <span class="req">*</span></label>
+      <input type="tel" name="Phone Number" placeholder="e.g. 9988776655" required />
+    </div>
+
+    <div class="field">
+      <label>Section <span class="req">*</span></label>
+      <input type="text" name="Section" placeholder="e.g. B" required />
+    </div>
+
+    <div class="field">
+      <label>Branch <span class="req">*</span></label>
+      <div class="select-wrap">
+        <select name="Branch" required>
+          <option value="" disabled selected>Select Branch</option>
+          <option>ME – Mechanical Engineering</option>
+          <option>CE – Civil Engineering</option>
+          <option>CS – Computer Science</option>
+          <option>EE – Electrical Engineering</option>
+          <option>EC – Electronics & Communication</option>
+          <option>IT – Information Technology</option>
+        </select>
+      </div>
+    </div>
+
+    <div class="field">
+      <label>Gender <span class="req">*</span></label>
+      <div class="radio-group">
+        <label>
+          <input type="radio" name="Gender" value="Male" checked />
+          Male
+        </label>
+        <label>
+          <input type="radio" name="Gender" value="Female" />
+          Female
+        </label>
+      </div>
+    </div>
+
+    <div class="btn-row">
+      <button type="submit" class="btn-submit">Submit Form</button>
+      <button type="reset" class="btn-reset">Reset</button>
+    </div>
+
+  </form>
+</div>
+
+<div class="toast" id="toast">✓ Thanks! We'll contact you soon.</div>
+
+<script>
+  // ── Replace with your actual Google Apps Script Web App URL ──
+  var scriptURL = "https://script.google.com/macros/s/AKfycbxasjqZtx7Pwmh5EFPWxcTmcKgUw1OiyICvNb9jB_NPVUT_Lsczd_Pm7ccpPEsZng/exec";
+
+  var form = document.forms['google-sheet'];
+  var toast = document.getElementById('toast');
+
+  function showToast(msg) {
+    toast.textContent = msg;
+    toast.classList.add('show');
+    setTimeout(() => toast.classList.remove('show'), 3500);
+  }
+
+  form.addEventListener('submit', function(e) {
+    e.preventDefault();
+    var btn = form.querySelector('.btn-submit');
+    btn.textContent = 'Submitting…';
+    btn.disabled = true;
+
+    fetch(scriptURL, { method: 'POST', body: new FormData(form) })
+      .then(function(response) {
+        showToast('✓ Thanks for contacting us! We will reach out soon.');
+        form.reset();
+      })
+      .catch(function(error) {
+        showToast('✗ Error! Please try again.');
+        console.error('Error:', error.message);
+      })
+      .finally(function() {
+        btn.textContent = 'Submit Form';
+        btn.disabled = false;
+      });
+  });
+</script>
+</body>
+</html>
